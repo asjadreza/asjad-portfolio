@@ -12,9 +12,9 @@ export const Navbar = () => {
     <div>
       {/* Desktop Navbar */}
       <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xs bg-linear-to-b">
-        <div className="max-w-460 mx-auto flex items-center md:justify-between justify-center">
+        <div className="max-w-350 mx-auto flex items-center md:justify-between justify-center">
           <a className="h-auto flex flex-row items-center" href="/">
-            <span className="custom-font">Asjad</span>
+            <span className="custom-font text-slate-100">Asjad</span>
           </a>
 
           <nav className="hidden md:flex gap-6 items-center text-slate-300">

@@ -298,7 +298,7 @@ export default function PortfolioPage() {
 
       <section id="experience" className="max-w-7xl mx-auto px-6 py-12">
         <h2
-          className="text-[20px] md:text-5xl  font-semibold mb-10"
+          className="text-[20px] md:text-5xl  font-semibold mb-10 text-slate-100"
           style={{ display: "inline-block" }}
         >
           EXPERIENCE
@@ -313,7 +313,7 @@ export default function PortfolioPage() {
       >
         <div className=" flex-col justify-center items-start mb-6">
           <h2
-            className="text-[20px] md:text-5xl font-semibold mb-6"
+            className="text-[20px] md:text-5xl font-semibold mb-6 text-slate-100"
             style={{ display: "inline-block" }}
           >
             PROJECTS
@@ -371,7 +371,7 @@ export default function PortfolioPage() {
               >
                 <div className="flex justify-between items-center">
                   <div>
-                    <h3 className="text-xl font-semibold transition-colors">
+                    <h3 className="text-xl font-semibold text-slate-100 transition-colors">
                       {p.title}
                     </h3>
                     <div className="text-sm text-slate-400 mt-1">
@@ -425,7 +425,7 @@ export default function PortfolioPage() {
                   {p.tech.map((t) => (
                     <span
                       key={t}
-                      className="text-xs px-3 py-1 rounded-md bg-white/5 group-hover:bg-white/10 transition-colors"
+                      className="text-xs px-3 py-1 text-slate-300 rounded-md bg-white/5 group-hover:bg-white/10 transition-colors"
                     >
                       {t}
                     </span>
@@ -461,7 +461,7 @@ export default function PortfolioPage() {
                 md:p-8 transition-all duration-300
               ">
                 <div className="flex justify-between items-center">
-                  <h3 className="text-lg font-semibold text-[16px]">
+                  <h3 className="text-lg font-semibold text-[16px] text-slate-100">
                     {p.title}
                   </h3>
                   <div className="flex gap-3">
@@ -486,16 +486,13 @@ export default function PortfolioPage() {
                   {p.tech.map((t) => (
                     <span
                       key={t}
-                      className="text-xs px-3 py-1 rounded-md bg-white/5"
+                      className="text-xs px-3 py-1 rounded-md text-slate-300 bg-white/5"
                       style={{ fontSize: "10px" }}
                     >
                       {t}
                     </span>
                   ))}
                 </div>
-                {/* <div className="text-center text-xs text-slate-400 mt-3">
-                  {mobileIndex + 1} of {projects.length}
-                </div> */}
               </div>
               {/* Buttons */}
               <div className="flex justify-center gap-3">
@@ -505,7 +502,7 @@ export default function PortfolioPage() {
                   disabled={mobileIndex === 0}
                   onClick={prev}
                 >
-                  <NavigateBeforeIcon />
+                  <NavigateBeforeIcon sx={{color: "#f1f1f1"}} />
                 </button>
                 <button
                   className="cursor-pointer"
@@ -513,7 +510,7 @@ export default function PortfolioPage() {
                   disabled={mobileIndex === projects.length - 1}
                   onClick={next}
                 >
-                  <NavigateNextIcon />
+                  <NavigateNextIcon sx={{color: "#f1f1f1"}}/>
                 </button>
               </div>
             </div>
@@ -524,7 +521,7 @@ export default function PortfolioPage() {
       {/* ---------- Contact ---------- */}
       <section id="contact" className="max-w-7xl mx-auto px-6 py-12">
         <h2
-          className="text-[20px] md:text-5xl font-semibold mb-6"
+          className="text-[20px] md:text-5xl font-semibold mb-6 text-slate-100"
           style={{ display: "inline-block" }}
         >
           CONTACT ME
