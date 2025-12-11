@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function Head() {
-  const siteUrl = "https://asjadreza.dev"; // Replace with your real domain
+  const siteUrl = "https://asjad-portfolio-dun.vercel.app/"; // Replace with your real domain
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",

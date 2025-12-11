@@ -13,9 +13,9 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Asjad Reza — Portfolio",
+  title: "Asjad Reza | Software Developer Portfolio",
   description:
-    "Asjad Reza — Full-stack developer. Portfolio showcasing web projects, experience, and contact details.",
+    "Portfolio of Asjad Reza, software developer skilled in Next.js, React, Vue/Nuxt, Node/Express, PostgreSQL, and modern UI/UX. Explore projects, experience, and contact details.",
   keywords: [
     "Asjad Reza",
     "Asjad Reza portfolio",
@@ -25,40 +25,51 @@ export const metadata: Metadata = {
     "Next.js",
     "React",
     "TypeScript",
+    "Vue",
+    "Nuxt",
+    "Node.js",
+    "Express",
+    "PostgreSQL",
+    "Prisma",
+    "Tailwind",
   ],
-  authors: [{ name: "Asjad Reza", url: "https://asjadreza.dev" }],
-  metadataBase: new URL("https://asjadreza.dev"),
-  alternates: { canonical: "https://asjadreza.dev" },
+  authors: [{ name: "Asjad Reza", url: "https://asjad-portfolio-dun.vercel.app/" }],
+  metadataBase: new URL("https://asjad-portfolio-dun.vercel.app/"),
+  alternates: { canonical: "https://asjad-portfolio-dun.vercel.app/" },
   openGraph: {
-    title: "Asjad Reza — Portfolio",
+    title: "Asjad Reza | Software Developer Portfolio",
     description:
-      "Asjad Reza — Full-stack developer. Portfolio showcasing web projects, experience, and contact details.",
-    url: "https://asjadreza.dev",
+      "Software developer experienced in React, Next.js, Vue/Nuxt, Node/Express, and modern UI/UX. View projects, experience, and ways to get in touch.",
+    url: "https://asjad-portfolio-dun.vercel.app/",
     siteName: "Asjad Reza",
     type: "website",
     images: [
       {
-        url: "https://asjadreza.dev/og-image.png",
+        url: "https://asjad-portfolio-dun.vercel.app/logo.png",
         width: 1200,
         height: 630,
-        alt: "Asjad Reza — Portfolio",
+        alt: "Asjad Reza | Software Developer Portfolio",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Asjad Reza — Portfolio",
+    title: "Asjad Reza | Software Developer Portfolio",
     description:
-      "Asjad Reza — Full-stack developer. Portfolio showcasing web projects, experience, and contact details.",
-    images: ["https://asjadreza.dev/og-image.png"],
+      "Software developer experienced in React, Next.js, Vue/Nuxt, Node/Express, and modern UI/UX. View projects, experience, and contact details.",
+    images: ["https://asjad-portfolio-dun.vercel.app/logo.png"],
   },
   robots: {
     index: true,
     follow: true,
   },
   icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+    // Use round/circle-safe logo for favicons and touch icons
+    icon: [
+      { url: "/logo-icon.png", type: "image/png", sizes: "any" },
+      { url: "/logo-icon.png", rel: "shortcut icon", type: "image/png" },
+    ],
+    apple: "/logo-icon.png",
   },
 };
 
@@ -69,6 +80,37 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          // Structured data improves SEO by describing the person and website.
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "Asjad Reza",
+              url: "https://asjad-portfolio-dun.vercel.app/",
+              jobTitle: "Software Developer",
+              sameAs: [
+                "https://asjad-portfolio-dun.vercel.app/",
+                "mailto:asjadreza64@gmail.com",
+              ],
+              knowsAbout: [
+                "Next.js",
+                "React",
+                "Vue",
+                "Nuxt",
+                "Node.js",
+                "Express",
+                "PostgreSQL",
+                "Prisma",
+                "Tailwind",
+                "TypeScript",
+              ],
+            }),
+          }}
+        />
+      </head>
       <body
         className={`${poppins.variable}`}
       >
