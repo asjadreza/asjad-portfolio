@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://asjad-portfolio-dun.vercel.app/logo.png",
+        url: "https://asjad-portfolio-dun.vercel.app/portfolio.png",
         width: 1200,
         height: 630,
         alt: "Asjad Reza | Software Developer Portfolio",
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     title: "Asjad Reza | Software Developer Portfolio",
     description:
       "Software developer experienced in React, Next.js, Vue/Nuxt, Node/Express, and modern UI/UX. View projects, experience, and contact details.",
-    images: ["https://asjad-portfolio-dun.vercel.app/logo.png"],
+    images: ["https://asjad-portfolio-dun.vercel.app/portfolio.png"],
   },
   robots: {
     index: true,
