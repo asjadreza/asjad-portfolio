@@ -18,6 +18,7 @@ export const metadata: Metadata = {
     "Portfolio of Asjad Reza, software developer skilled in Next.js, React, Vue/Nuxt, Node/Express, PostgreSQL, and modern UI/UX. Explore projects, experience, and contact details.",
   keywords: [
     "Asjad Reza",
+    "Asjad's Resume",
     "Asjad Reza portfolio",
     "Asjad Reza developer",
     "software engineer",
