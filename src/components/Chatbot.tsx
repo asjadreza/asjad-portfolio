@@ -93,6 +93,8 @@ export default function Chatbot() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
 
   const [hasNewMessage, setHasNewMessage] = useState(false);
   // const originalTitle = useRef<string>("");
@@ -210,6 +212,22 @@ export default function Chatbot() {
       handleSend();
     });
   };
+
+  useEffect(() => {
+  let focusTimer: ReturnType<typeof setTimeout>;
+
+  if (isOpen) {
+    focusTimer = setTimeout(() => {
+      inputRef.current?.focus();
+    }, 50); // small delay to ensure rendering
+  }
+
+  return () => {
+    if (focusTimer) clearTimeout(focusTimer);
+  };
+}, [isOpen]);
+
+
 
   return (
     <>
@@ -334,6 +352,7 @@ export default function Chatbot() {
               <textarea
                 className="flex-1 rounded-xl bg-gray-50 border border-gray-200 text-slate-900 text-sm px-3 py-2 focus:outline-none focus:border-blue-400 resize-none"
                 rows={2}
+                ref={inputRef}
                 placeholder="Ask about projects, stack, or experience..."
                 value={input}
                 onChange={(e) => setInput(e.target.value)}

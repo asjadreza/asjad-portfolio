@@ -53,6 +53,7 @@ export default function ExperienceTimeline() {
                 xs: "1rem",
                 sm: "1.25rem",
               },
+              color: "#fff"
             }}
           >
             Software Engineer — SYMB Technologies
@@ -190,6 +191,7 @@ export default function ExperienceTimeline() {
                 xs: "1rem",
                 sm: "1.25rem",
               },
+              color: "#fff"
             }}
           >
             Frontend Developer — Upwork (Freelance)

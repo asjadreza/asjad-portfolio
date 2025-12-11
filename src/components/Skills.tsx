@@ -15,7 +15,7 @@ const SkillsSection = () => {
     { name: "HTML5", icon: "HTML5.svg" },
     { name: "CSS3", icon: "CSS3.svg" },
     { name: "Javascript", icon: "JavaScript.svg" },
-    { name: "React.js", icon: "React.svg" },
+    { name: "React.js", icon: "React-icon.svg" },
     { name: "Next.js", icon: "next.js.png" },
     { name: "Vue.js", icon: "Vue.js.svg" },
     { name: "Nuxt.js", icon: "Nuxt JS.svg" },

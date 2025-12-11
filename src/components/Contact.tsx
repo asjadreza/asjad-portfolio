@@ -184,7 +184,7 @@ export default function ContactComponent() {
         <div className="rounded-xl glass flex flex-col md:ms-2">
           <div className="flex flex-col">
             <div className="border rounded-xl border-white/10 flex flex-col p-5 hover:border-white/65 transition-all duration-300 group">
-              <h3 className="font-semibold">Say hi</h3>
+              <h3 className="font-semibold text-slate-100">Say hi</h3>
               <div className="flex flex-row gap-6 mt-1">
                 {[
                   {
@@ -237,7 +237,7 @@ export default function ContactComponent() {
                   {["VSCode", "Figma", "Git", "Vercel"].map((t) => (
                     <span
                       key={t}
-                      className="text-xs px-2 py-1 rounded-md bg-white/4"
+                      className="text-xs text-slate-300 px-2 py-1 rounded-md bg-white/4"
                     >
                       {t}
                     </span>
