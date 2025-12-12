@@ -309,7 +309,7 @@ export default function PortfolioPage() {
       <section
         id="projects"
         ref={sectionRef}
-        className="max-w-7xl mx-auto px-6 py-12 scroll-mt-10"
+        className="max-w-7xl mx-auto px-6 py-12 scroll-mt-10 overflow-x-clip"
       >
         <div className=" flex-col justify-center items-start mb-6">
           <h2
