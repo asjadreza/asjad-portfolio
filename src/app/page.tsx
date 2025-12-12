@@ -86,109 +86,225 @@ export default function PortfolioPage() {
   const scrollAccumulator = useRef(0);
 
   // 1. Detect In-View AND Direction of Entry
-  useEffect(() => {
-    const ref = sectionRef.current;
-    if (!ref) return;
+  // useEffect(() => {
+  //   const ref = sectionRef.current;
+  //   if (!ref) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setSectionInView(entry.isIntersecting);
+  //   const observer = new IntersectionObserver(
+  //     ([entry]) => {
+  //       setSectionInView(entry.isIntersecting);
 
-        if (entry.isIntersecting) {
-          if (entry.boundingClientRect.top < 0) {
-            setActiveIndex(projects.length - 1);
-          } else {
-            setActiveIndex(0);
-          }
+  //       if (entry.isIntersecting) {
+  //         if (entry.boundingClientRect.top < 0) {
+  //           setActiveIndex(projects.length - 1);
+  //         } else {
+  //           setActiveIndex(0);
+  //         }
+  //       }
+  //     },
+  //     { threshold: 0.4 }
+  //   );
+
+  //   observer.observe(ref);
+  //   return () => observer.disconnect();
+  // }, []);
+
+  // 1. Detect In-View AND Direction of Entry (IMPROVED)
+useEffect(() => {
+  const ref = sectionRef.current;
+  if (!ref) return;
+
+  let lastScrollTop = 0;
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      
+      setSectionInView(entry.isIntersecting);
+
+      if (entry.isIntersecting) {
+        // Determine direction based on scroll position
+        if (currentScrollTop < lastScrollTop) {
+          // Scrolling up into section - start from last project
+          setActiveIndex(projects.length - 1);
+        } else {
+          // Scrolling down into section - start from first project
+          setActiveIndex(0);
         }
-      },
-      { threshold: 0.4 }
-    );
+      }
+      
+      lastScrollTop = currentScrollTop;
+    },
+    { 
+      threshold: 0.4,
+      rootMargin: '50px 0px' // Add some margin for smoother transitions
+    }
+  );
 
-    observer.observe(ref);
-    return () => observer.disconnect();
-  }, []);
+  observer.observe(ref);
+  return () => observer.disconnect();
+}, []);
 
   // 2. Handle Wheel Events (FIXED FOR TRACKPAD)
-  useEffect(() => {
-    const handleWheelGlobal = (e: WheelEvent) => {
-      if (!sectionInView) return;
+  // useEffect(() => {
+  //   const handleWheelGlobal = (e: WheelEvent) => {
+  //     if (!sectionInView) return;
 
-      const delta = e.deltaY;
+  //     const delta = e.deltaY;
 
-      // BOUNDARY CHECK:
-      // If at FIRST project and scrolling UP -> Let browser handle it (exit section)
-      if (activeIndex === 0 && delta < 0) {
-        // Important: Reset accumulator so we don't accidentally trigger later
-        scrollAccumulator.current = 0;
+  //     // BOUNDARY CHECK:
+  //     // If at FIRST project and scrolling UP -> Let browser handle it (exit section)
+  //     if (activeIndex === 0 && delta < 0) {
+  //       // Important: Reset accumulator so we don't accidentally trigger later
+  //       scrollAccumulator.current = 0;
+  //       return;
+  //     }
+
+  //     // If at LAST project and scrolling DOWN -> Let browser handle it (exit section)
+  //     if (activeIndex === projects.length - 1 && delta > 0) {
+  //       scrollAccumulator.current = 0;
+  //       return;
+  //     }
+
+  //     // We are "locked". Prevent default immediately to stop page scroll.
+  //     e.preventDefault();
+  //     e.stopPropagation();
+
+  //     if (sectionRef.current) {
+  //       sectionRef.current.scrollIntoView({
+  //         behavior: "smooth",
+  //         block: "center",
+  //       });
+  //     }
+
+  //     if (isAnimating) return;
+
+  //     // --- LOGIC CHANGE START ---
+  //     // Instead of checking delta directly, add to our accumulator.https://chatgpt.com/g/g-drpwu8nYs-ai-signature-generator
+  //     // This absorbs the small, rapid events from trackpads.
+  //     scrollAccumulator.current += delta;
+
+  //     // Threshold: 60px is a sweet spot.
+  //     // A standard mouse wheel 'click' is usually ~100px (triggers instantly).
+  //     // A trackpad swipe is composed of many ~4px events.
+  //     const SCROLL_THRESHOLD = 40;
+
+  //     // Only trigger if we've accumulated enough scroll distance
+  //     if (Math.abs(scrollAccumulator.current) > SCROLL_THRESHOLD) {
+  //       setIsAnimating(true);
+
+  //       // Determine direction based on the accumulated value, not just the single event
+  //       const direction = scrollAccumulator.current > 0 ? 1 : -1;
+
+  //       // Reset accumulator immediately to prevent double-firing
+  //       scrollAccumulator.current = 0;
+
+  //       setActiveIndex((prev) => {
+  //         if (direction > 0) {
+  //           // Scroll Down
+  //           return Math.min(prev + 1, projects.length - 1);
+  //         } else {
+  //           // Scroll Up
+  //           return Math.max(prev - 1, 0);
+  //         }
+  //       });
+
+  //       setTimeout(() => {
+  //         setIsAnimating(false);
+  //         // Safety: ensure no lingering inertia triggers a jump after cooldown
+  //         scrollAccumulator.current = 0;
+  //       }, 650);
+  //     }
+  //     // --- LOGIC CHANGE END ---
+  //   };
+
+  //   // Note: 'passive: false' is required to use preventDefault()
+  //   window.addEventListener("wheel", handleWheelGlobal, { passive: false });
+
+  //   return () => {
+  //     window.removeEventListener("wheel", handleWheelGlobal);
+  //   };
+  // }, [sectionInView, activeIndex, isAnimating]);
+
+
+  // 2. Handle Wheel Events (IMPROVED FIX)
+useEffect(() => {
+  const handleWheelGlobal = (e: WheelEvent) => {
+    if (!sectionInView) return;
+
+    const delta = e.deltaY;
+
+    // Boundary check with early return
+    if (activeIndex === 0 && delta < 0) {
+      // At top and scrolling up - allow natural scroll
+      scrollAccumulator.current = 0;
+      return;
+    }
+
+    if (activeIndex === projects.length - 1 && delta > 0) {
+      // At bottom and scrolling down - allow natural scroll
+      scrollAccumulator.current = 0;
+      return;
+    }
+
+    // Prevent default to lock scroll in this section
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Center the section in view
+    if (sectionRef.current) {
+      sectionRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+
+    if (isAnimating) return;
+
+    // Accumulate scroll delta
+    scrollAccumulator.current += delta;
+
+    // Set threshold - you can adjust this value based on testing
+    const SCROLL_THRESHOLD = 50;
+
+    // Check if we've crossed the threshold
+    if (Math.abs(scrollAccumulator.current) >= SCROLL_THRESHOLD) {
+      // Determine direction based on accumulated value
+      const direction = scrollAccumulator.current > 0 ? 1 : -1;
+      
+      // Reset accumulator
+      scrollAccumulator.current = 0;
+      
+      // Prevent animation if we're at boundaries
+      if ((activeIndex === 0 && direction < 0) || 
+          (activeIndex === projects.length - 1 && direction > 0)) {
         return;
       }
 
-      // If at LAST project and scrolling DOWN -> Let browser handle it (exit section)
-      if (activeIndex === projects.length - 1 && delta > 0) {
-        scrollAccumulator.current = 0;
-        return;
-      }
+      setIsAnimating(true);
 
-      // We are "locked". Prevent default immediately to stop page scroll.
-      e.preventDefault();
-      e.stopPropagation();
+      setActiveIndex((prev) => {
+        if (direction > 0) {
+          // Scroll Down - Next project
+          return Math.min(prev + 1, projects.length - 1);
+        } else {
+          // Scroll Up - Previous project
+          return Math.max(prev - 1, 0);
+        }
+      });
 
-      if (sectionRef.current) {
-        sectionRef.current.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-      }
+      setTimeout(() => {
+        setIsAnimating(false);
+      }, 650); // Match this with your animation duration
+    }
+  };
 
-      if (isAnimating) return;
+  window.addEventListener("wheel", handleWheelGlobal, { passive: false });
 
-      // --- LOGIC CHANGE START ---
-      // Instead of checking delta directly, add to our accumulator.https://chatgpt.com/g/g-drpwu8nYs-ai-signature-generator
-      // This absorbs the small, rapid events from trackpads.
-      scrollAccumulator.current += delta;
-
-      // Threshold: 60px is a sweet spot.
-      // A standard mouse wheel 'click' is usually ~100px (triggers instantly).
-      // A trackpad swipe is composed of many ~4px events.
-      const SCROLL_THRESHOLD = 40;
-
-      // Only trigger if we've accumulated enough scroll distance
-      if (Math.abs(scrollAccumulator.current) > SCROLL_THRESHOLD) {
-        setIsAnimating(true);
-
-        // Determine direction based on the accumulated value, not just the single event
-        const direction = scrollAccumulator.current > 0 ? 1 : -1;
-
-        // Reset accumulator immediately to prevent double-firing
-        scrollAccumulator.current = 0;
-
-        setActiveIndex((prev) => {
-          if (direction > 0) {
-            // Scroll Down
-            return Math.min(prev + 1, projects.length - 1);
-          } else {
-            // Scroll Up
-            return Math.max(prev - 1, 0);
-          }
-        });
-
-        setTimeout(() => {
-          setIsAnimating(false);
-          // Safety: ensure no lingering inertia triggers a jump after cooldown
-          scrollAccumulator.current = 0;
-        }, 650);
-      }
-      // --- LOGIC CHANGE END ---
-    };
-
-    // Note: 'passive: false' is required to use preventDefault()
-    window.addEventListener("wheel", handleWheelGlobal, { passive: false });
-
-    return () => {
-      window.removeEventListener("wheel", handleWheelGlobal);
-    };
-  }, [sectionInView, activeIndex, isAnimating]);
+  return () => {
+    window.removeEventListener("wheel", handleWheelGlobal);
+  };
+}, [sectionInView, activeIndex, isAnimating]);
 
   // 3. Keyboard Navigation
   useEffect(() => {
@@ -221,6 +337,13 @@ export default function PortfolioPage() {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [sectionInView, isAnimating, activeIndex]);
+
+  // Add this effect to reset accumulator when leaving the section
+useEffect(() => {
+  if (!sectionInView) {
+    scrollAccumulator.current = 0;
+  }
+}, [sectionInView]);
 
   return (
     <main className="min-h-screen bg-[url('/looper.png')] bg-[#111]  bg-no-repeat">
