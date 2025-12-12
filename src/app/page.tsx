@@ -307,36 +307,71 @@ useEffect(() => {
 }, [sectionInView, activeIndex, isAnimating]);
 
   // 3. Keyboard Navigation
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!sectionInView) return;
-      if (isAnimating) return;
+  // useEffect(() => {
+  //   const handleKeyDown = (e: KeyboardEvent) => {
+  //     if (!sectionInView) return;
+  //     if (isAnimating) return;
 
-      if (e.key === "ArrowDown" || e.key === "ArrowRight") {
-        if (activeIndex < projects.length - 1) {
-          e.preventDefault();
-          setIsAnimating(true);
-          setActiveIndex((prev) => prev + 1);
-          setTimeout(() => setIsAnimating(false), 650);
-        }
-      } else if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
-        if (activeIndex > 0) {
-          e.preventDefault();
-          setIsAnimating(true);
-          setActiveIndex((prev) => prev - 1);
-          setTimeout(() => setIsAnimating(false), 650);
-        }
+  //     if (e.key === "ArrowDown" || e.key === "ArrowRight") {
+  //       if (activeIndex < projects.length - 1) {
+  //         e.preventDefault();
+  //         setIsAnimating(true);
+  //         setActiveIndex((prev) => prev + 1);
+  //         setTimeout(() => setIsAnimating(false), 650);
+  //       }
+  //     } else if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
+  //       if (activeIndex > 0) {
+  //         e.preventDefault();
+  //         setIsAnimating(true);
+  //         setActiveIndex((prev) => prev - 1);
+  //         setTimeout(() => setIsAnimating(false), 650);
+  //       }
+  //     }
+  //   };
+
+  //   if (sectionInView) {
+  //     window.addEventListener("keydown", handleKeyDown);
+  //   }
+
+  //   return () => {
+  //     window.removeEventListener("keydown", handleKeyDown);
+  //   };
+  // }, [sectionInView, isAnimating, activeIndex]);
+
+  // 3. Keyboard Navigation (OPTIONAL IMPROVEMENT)
+useEffect(() => {
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (!sectionInView) return;
+    if (isAnimating) return;
+
+    let newIndex = activeIndex;
+    
+    if (e.key === "ArrowDown" || e.key === "ArrowRight") {
+      if (activeIndex < projects.length - 1) {
+        e.preventDefault();
+        newIndex = activeIndex + 1;
       }
-    };
-
-    if (sectionInView) {
-      window.addEventListener("keydown", handleKeyDown);
+    } else if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
+      if (activeIndex > 0) {
+        e.preventDefault();
+        newIndex = activeIndex - 1;
+      }
     }
+    
+    // Only update if index actually changed
+    if (newIndex !== activeIndex) {
+      setIsAnimating(true);
+      setActiveIndex(newIndex);
+      setTimeout(() => setIsAnimating(false), 650);
+    }
+  };
 
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [sectionInView, isAnimating, activeIndex]);
+  window.addEventListener("keydown", handleKeyDown);
+
+  return () => {
+    window.removeEventListener("keydown", handleKeyDown);
+  };
+}, [sectionInView, isAnimating, activeIndex]);
 
   // Add this effect to reset accumulator when leaving the section
 useEffect(() => {
